@@ -23,14 +23,14 @@ jobs:
       - name: Setup Golang environment
         uses: actions/setup-go@v4
       - name: Run test
-        run: |
-          go list -m | xargs go test
+        run: go list -m | xargs go test
 
-  versions:
+  releases:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go: ['1.19.4']
+        # https://go.dev/doc/devel/release
+        go: ['1.20.2', '1.19.7', '1.18.10']
     steps:
       - uses: actions/checkout@v3
       - name: Setup Golang environment
@@ -38,8 +38,7 @@ jobs:
         with:
           go-version: ${{ matrix.go }}
       - name: Run test
-        run: |
-          go list -m | xargs go run
+        run: go list -m | xargs go run
 
   fmt:
     runs-on: ubuntu-latest
@@ -49,5 +48,14 @@ jobs:
       - name: Setup Golang environment
         uses: actions/setup-go@v4
       - name: Run cargo fmt
-        run: |
-          go list -m | xargs gofmt -e
+        run: go list -m | xargs gofmt -e
+
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+      - name: Setup Golang environment
+        uses: actions/setup-go@v4
+      - name: Run test
+        run: go list -m | xargs go run
