@@ -1,5 +1,8 @@
 # The Go Programming Language
 
+[![CI](https://github.com/keithnoguchi/book-go/actions/workflows/ci.yml/badge.svg)](
+https://github.com/keithnoguchi/book-go/actions)
+
 [the go programming language]: https://www.gopl.io/
 
 Examples from [the Go Programming Language], aka, the book.
