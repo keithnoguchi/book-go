@@ -1,3 +1,4 @@
+// A command line echo
 package main
 
 import (
