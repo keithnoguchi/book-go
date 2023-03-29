@@ -8,6 +8,7 @@
 package main
 
 import (
+	"context"
 	"image"
 	"image/color"
 	"image/gif"
@@ -15,6 +16,8 @@ import (
 	"math"
 	"math/rand"
 	"net/http"
+	"sync"
+	"time"
 )
 
 var palette = []color.Color{color.White, color.Black}
@@ -26,7 +29,24 @@ const (
 
 func main() {
 	http.HandleFunc("/", handler)
-	log.Fatal(http.ListenAndServe("localhost:8000", nil))
+	s := &http.Server{Addr: "localhost:8000"}
+
+	// Fires up the server goroutine.
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		if err := s.ListenAndServe(); err != http.ErrServerClosed {
+			log.Fatal(err)
+		}
+	}()
+
+	// Shutdowns the server after five seconds
+	time.Sleep(5 * time.Second)
+	if err := s.Shutdown(context.Background()); err != nil {
+		log.Fatal(err)
+	}
+	wg.Wait()
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
