@@ -1,4 +1,4 @@
-// A duplicate counter.
+// A duplicate line detector.
 package main
 
 import (
@@ -10,14 +10,30 @@ import (
 func main() {
 	counts := make(map[string]int)
 
-	reader := bufio.NewScanner(os.Stdin)
-	for reader.Scan() {
-		counts[reader.Text()]++
+	files := os.Args[1:]
+	if len(files) == 0 {
+		countLines(os.Stdin, counts)
+	} else {
+		for _, file := range files {
+			f, err := os.Open(file)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "dup: %v\n", err)
+				continue
+			}
+			countLines(f, counts)
+			f.Close()
+		}
 	}
-
 	for line, n := range counts {
 		if n > 1 {
 			fmt.Printf("%d\t%s\n", n, line)
 		}
+	}
+}
+
+func countLines(f *os.File, counts map[string]int) {
+	reader := bufio.NewScanner(f)
+	for reader.Scan() {
+		counts[reader.Text()]++
 	}
 }
