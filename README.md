@@ -9,6 +9,6 @@ Examples from [the Go Programming Language], aka, the book.
 
 ## Examples
 
-- [Chapter 1: Hello world!](ch01/main.go)
+- [Chapter 1: A lissajous web server](ch01/main.go)
 
 Happy Hacking!
