@@ -6,6 +6,6 @@ Examples from [the Go Programming Language], aka, the book.
 
 ## Examples
 
-- [Chapter 1: A HTTP client](ch01/main.go)
+- [Chapter 1: A web server](ch01/main.go)
 
 Happy Hacking!
