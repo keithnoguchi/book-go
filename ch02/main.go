@@ -1,14 +1,19 @@
-// ftoC
+// echo with flag module
 package main
 
-import "fmt"
+import (
+	"flag"
+	"fmt"
+	"strings"
+)
+
+var n = flag.Bool("n", false, "omit trailing newline")
+var sep = flag.String("s", " ", "separator")
 
 func main() {
-	var freezingF, boilingF = 32.0, 212.0
-	fmt.Printf("%gF = %gC\n", freezingF, fToC(freezingF))
-	fmt.Printf("%gF = %gC\n", boilingF, fToC(boilingF))
-}
-
-func fToC(f float64) float64 {
-	return (f - 32) * 5 / 9
+	flag.Parse()
+	fmt.Print(strings.Join(flag.Args(), *sep))
+	if !*n {
+		fmt.Println()
+	}
 }
