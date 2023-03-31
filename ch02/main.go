@@ -13,14 +13,14 @@ func init() {
 
 // Counts the number of 1s
 func popCount(x uint64) int {
-	return int(pc[byte(x >> (8*0))] +
-	pc[byte(x >> (8*1))] +
-	pc[byte(x >> (8*2))] +
-	pc[byte(x >> (8*3))] +
-	pc[byte(x >> (8*4))] +
-	pc[byte(x >> (8*5))] +
-	pc[byte(x >> (8*6))] +
-	pc[byte(x >> (8*7))])
+	return int(pc[byte(x>>(8*0))] +
+		pc[byte(x>>(8*1))] +
+		pc[byte(x>>(8*2))] +
+		pc[byte(x>>(8*3))] +
+		pc[byte(x>>(8*4))] +
+		pc[byte(x>>(8*5))] +
+		pc[byte(x>>(8*6))] +
+		pc[byte(x>>(8*7))])
 }
 
 func main() {

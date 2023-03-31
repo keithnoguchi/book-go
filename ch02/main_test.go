@@ -5,7 +5,7 @@ import "testing"
 func testPopCount(x uint64) int {
 	count := 0
 	for i := 0; i < 64; i++ {
-		if (x >> i) & 1 == 1 {
+		if (x>>i)&1 == 1 {
 			count += 1
 		}
 	}
