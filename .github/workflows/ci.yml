@@ -47,8 +47,8 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup Golang environment
         uses: actions/setup-go@v4
-      - name: Run cargo fmt
-        run: go list -m | xargs gofmt -e
+      - name: Run gofmt
+        run: diff -u <(echo -n) <(go list -m | xargs gofmt -d)
 
   run:
     runs-on: ubuntu-latest
@@ -57,5 +57,5 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup Golang environment
         uses: actions/setup-go@v4
-      - name: Run test
+      - name: Run program
         run: go list -m | xargs go run
