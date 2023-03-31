@@ -10,6 +10,6 @@ Examples from [the Go Programming Language], aka, the book.
 ## Examples
 
 - [Chapter 1: A lissajous web server](ch01/main.go)
-- [Chapter 2: A command line arguments echo](ch02/main.go)
+- [Chapter 2: A pop counter](ch02/main.go)
 
 Happy Hacking!
