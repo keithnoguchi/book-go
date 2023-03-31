@@ -1,4 +1,4 @@
-// A popcount program
+// A pop counter
 package main
 
 import "fmt"
