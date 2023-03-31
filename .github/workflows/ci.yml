@@ -48,7 +48,7 @@ jobs:
       - name: Setup Golang environment
         uses: actions/setup-go@v4
       - name: Run gofmt
-        run: diff -u <(echo -n) <(go list -m | xargs gofmt -e)
+        run: diff -u <(echo -n) <(go list -m | xargs gofmt -d)
 
   run:
     runs-on: ubuntu-latest
