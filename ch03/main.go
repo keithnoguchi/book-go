@@ -16,12 +16,12 @@ import (
 type Mandelbrot struct{}
 
 func main() {
-	var wg sync.WaitGroup
-	s := http.Server{
+	var s = http.Server{
 		Addr:    "localhost:8080",
 		Handler: Mandelbrot{},
 	}
 
+	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
