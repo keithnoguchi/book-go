@@ -3,23 +3,23 @@ package main
 
 import (
 	"context"
-	"fmt"
-	_ "image"
-	_ "image/color"
-	_ "image/png"
+	"image"
+	"image/color"
+	"image/png"
 	"log"
-	_ "math/cmplx"
+	"math/cmplx"
 	"net/http"
-	_ "os"
 	"sync"
 	"time"
 )
+
+type Mandelbrot struct {}
 
 func main() {
 	var wg sync.WaitGroup
 	s := http.Server{
 		Addr:    "localhost:8080",
-		Handler: mandelbrot {},
+		Handler: Mandelbrot {},
 	}
 
 	wg.Add(1)
@@ -37,8 +37,34 @@ func main() {
 	wg.Wait()
 }
 
-type mandelbrot struct {}
+func (h Mandelbrot) ServeHTTP(w http.ResponseWriter, _r *http.Request) {
+	const (
+		xmin, ymin, xmax, ymax = -2, -2, +2, +2
+		width, height          = 1024, 1024
+	)
 
-func (h mandelbrot) ServeHTTP(w http.ResponseWriter, _r *http.Request) {
-	fmt.Fprintln(w, "Hello world")
+	img := image.NewRGBA(image.Rect(0, 0, width, height))
+	for py := 0; py < height; py++ {
+		y := float64(py)/height*(ymax-ymin) + ymin
+		for px := 0; px < width; px++ {
+			x := float64(px)/width*(xmax-xmin) + xmin
+			z := complex(x, y)
+			img.Set(px, py, mandelbrot(z))
+		}
+	}
+	png.Encode(w, img)
+}
+
+func mandelbrot(z complex128) color.Color {
+	const iterations = 200
+	const contrast = 15
+
+	var v complex128
+	for n := uint8(0); n < iterations; n++ {
+		v = v*v + z
+		if cmplx.Abs(v) > 2 {
+			return color.Gray{255 - contrast*n}
+		}
+	}
+	return color.Black
 }
