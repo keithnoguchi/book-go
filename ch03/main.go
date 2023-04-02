@@ -13,13 +13,13 @@ import (
 	"time"
 )
 
-type Mandelbrot struct {}
+type Mandelbrot struct{}
 
 func main() {
 	var wg sync.WaitGroup
 	s := http.Server{
 		Addr:    "localhost:8080",
-		Handler: Mandelbrot {},
+		Handler: Mandelbrot{},
 	}
 
 	wg.Add(1)
