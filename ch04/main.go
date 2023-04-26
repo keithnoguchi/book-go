@@ -3,7 +3,8 @@ package main
 import "fmt"
 
 func main() {
-	var a [3]int
-	fmt.Println(a[0])
-	fmt.Println(a[len(a)-1])
+	r := [...]int{1, 2, 3};
+	fmt.Println(len(r))
+	fmt.Println(r[2])
+	fmt.Printf("%T\n", r)
 }
