@@ -2,17 +2,9 @@ package main
 
 import "fmt"
 
-type Currency int
-
-const (
-	USD Currency = iota
-	EUR
-	GRP
-	RMB
-	JPY
-)
-
 func main() {
-	symbols := [...]string{USD: "$", EUR: "e", JPY: "y"}
-	fmt.Println(symbols)
+	a := [2]int{1, 2}
+	b := [...]int{1, 2}
+
+	fmt.Println(a == b)
 }
