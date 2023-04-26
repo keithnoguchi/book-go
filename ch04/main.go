@@ -20,7 +20,5 @@ func main() {
 }
 
 func zero(ptr *[32]byte) {
-	for i := range ptr {
-		ptr[i] = 0
-	}
+	*ptr = [32]byte{}
 }
