@@ -6,7 +6,12 @@ import (
 )
 
 func main() {
-	c1 := sha256.Sum256([]byte("x"))
-	c2 := sha256.Sum256([]byte("X"))
-	fmt.Printf("%x\n%x\n%t\n%T\n", c1, c2, c1 == c2, c1)
+	s1 := "X"
+	s2 := "x"
+	c1 := sha256.Sum256([]byte(s1))
+	c2 := sha256.Sum256([]byte(s2))
+	fmt.Printf(
+		"%c: 0x%x(%08b)\n%c: 0x%x(%08b)\n%x\n%x\n%t\n%T\n",
+		s1[0], s1, s1[0], s2[0], s2, s2[0], c1, c2, c1 == c2, c1,
+	)
 }
