@@ -14,4 +14,13 @@ func main() {
 		"%c: 0x%x(%08b)\n%c: 0x%x(%08b)\n%x\n%x\n%t\n%T\n",
 		s1[0], s1, s1[0], s2[0], s2, s2[0], c1, c2, c1 == c2, c1,
 	)
+
+	zero(&c1)
+	fmt.Printf("%x\n", c1)
+}
+
+func zero(ptr *[32]byte) {
+	for i := range ptr {
+		ptr[i] = 0
+	}
 }
