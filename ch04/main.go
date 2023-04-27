@@ -1,24 +1,19 @@
 package main
 
-import (
-	"crypto/sha256"
-	"fmt"
-)
+import "fmt"
 
-func main() {
-	s1 := "X"
-	s2 := "x"
-	c1 := sha256.Sum256([]byte(s1))
-	c2 := sha256.Sum256([]byte(s2))
-	fmt.Printf(
-		"%c: 0x%x(%08b)\n%c: 0x%x(%08b)\n%x\n%x\n%t\n%T\n",
-		s1[0], s1, s1[0], s2[0], s2, s2[0], c1, c2, c1 == c2, c1,
-	)
-
-	zero(&c1)
-	fmt.Printf("%x\n", c1)
+// An in-place reverse function.
+func reverse(s []int) {
+	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
+		s[i], s[j] = s[j], s[i]
+	}
 }
 
-func zero(ptr *[32]byte) {
-	*ptr = [32]byte{}
+func main() {
+	a := make([]int, 20)
+	for i := range a {
+		a[i] = i
+	}
+	reverse(a)
+	fmt.Println(a)
 }
