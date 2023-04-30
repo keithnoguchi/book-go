@@ -23,33 +23,27 @@ func main() {
 	fmt.Println(s)
 }
 
-type Stack struct {
-	slice []int
-}
-
-func (s Stack) String() string {
-	return fmt.Sprintf("%v", s.slice)
-}
+type Stack []int
 
 func (s *Stack) push(data ...int) {
-	s.slice = append(s.slice, data...)
+	*s = append(*s, data...)
 }
 
 func (s *Stack) pop() (int, error) {
-	n := len(s.slice)
+	n := len(*s)
 	if n == 0 {
 		return 0, errors.New("empty")
 	}
-	data := s.slice[n-1]
-	s.slice = s.slice[:n-1]
+	data := (*s)[n-1]
+	*s = (*s)[:n-1]
 	return data, nil
 }
 
 func (s *Stack) remove(pos uint) error {
-	if int(pos) >= len(s.slice) {
+	if int(pos) >= len(*s) {
 		return errors.New("out of range")
 	}
-	copy(s.slice[pos:], s.slice[pos+1:])
-	s.slice = s.slice[:len(s.slice)-1]
+	copy((*s)[pos:], (*s)[pos+1:])
+	*s = (*s)[:len(*s)-1]
 	return nil
 }
