@@ -1,49 +1,26 @@
+// A diercted graph
 package main
 
-import (
-	"errors"
-	"fmt"
-)
+import "fmt"
+
+var graph map[string]map[string]float64
 
 func main() {
-	s := Stack{}
-	s.push(1)
-	s.push(2)
-	s.push(3)
-	s.push(4, 5, 6)
-	fmt.Println(s)
-	s.remove(0)
-	for {
-		if data, err := s.pop(); err == nil {
-			fmt.Println(data)
-		} else {
-			break
-		}
-	}
-	fmt.Println(s)
+	graph = make(map[string]map[string]float64)
+	addEdge(graph, "A", "B")
+	fmt.Println(hasEdge(graph, "A", "B"))
+	fmt.Println(hasEdge(graph, "B", "A"))
 }
 
-type Stack []int
-
-func (s *Stack) push(data ...int) {
-	*s = append(*s, data...)
+func addEdge(graph map[string]map[string]float64, from, to string) {
+	// assigning to the default map value will cause panic.
+	if graph[from] == nil {
+		graph[from] = make(map[string]float64)
+	}
+	graph[from][to] = 1.1
 }
 
-func (s *Stack) pop() (int, error) {
-	n := len(*s)
-	if n == 0 {
-		return 0, errors.New("empty")
-	}
-	data := (*s)[n-1]
-	*s = (*s)[:n-1]
-	return data, nil
-}
-
-func (s *Stack) remove(pos uint) error {
-	if int(pos) >= len(*s) {
-		return errors.New("out of range")
-	}
-	copy((*s)[pos:], (*s)[pos+1:])
-	*s = (*s)[:len(*s)-1]
-	return nil
+func hasEdge(graph map[string]map[string]float64, from, to string) float64 {
+	// referencing the default map value won't cause panic.
+	return graph[from][to]
 }
