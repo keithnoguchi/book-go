@@ -20,5 +20,6 @@ type Wheel struct {
 func main() {
 	var c Circle
 	var w Wheel
+	c.Center.Y = 1
 	fmt.Println(c, w)
 }
