@@ -8,18 +8,17 @@ type Point struct {
 }
 
 type Circle struct {
-	Center Point
+	Point
 	Radius int
 }
 
 type Wheel struct {
-	Circle Circle
+	Circle
 	Spokes int
 }
 
 func main() {
-	var c Circle
 	var w Wheel
-	c.Center.Y = 1
-	fmt.Println(c, w)
+	w.Y = 1
+	fmt.Println(w)
 }
