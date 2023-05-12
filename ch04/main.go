@@ -1,24 +1,22 @@
-// Struct Embedding, p. 104
+// JSON encoding, p. 107
 package main
 
 import "fmt"
 
-type Point struct {
-	X, Y int
+type Movie struct {
+	Title  string
+	Year   int  `json:"released"`
+	Color  bool `json:"color,omitempty"`
+	Actors []string
 }
 
-type Circle struct {
-	Point
-	Radius int
-}
-
-type Wheel struct {
-	Circle
-	Spokes int
+var movies = []Movie{
+	{
+		Title: "Cassablanca", Year: 1942, Color: false,
+		Actors: []string{"Humphrey Bogart", "Ingrid Bergman"},
+	},
 }
 
 func main() {
-	var w Wheel
-	w.Y = 1
-	fmt.Println(w)
+	fmt.Println(movies)
 }
