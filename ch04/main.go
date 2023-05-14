@@ -1,22 +1,29 @@
-// JSON encoding, p. 107
+// encoding/json.MarshalIndent()
 package main
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+	"log"
+)
 
 type Movie struct {
-	Title  string
-	Year   int  `json:"released"`
-	Color  bool `json:"color,omitempty"`
-	Actors []string
-}
-
-var movies = []Movie{
-	{
-		Title: "Cassablanca", Year: 1942, Color: false,
-		Actors: []string{"Humphrey Bogart", "Ingrid Bergman"},
-	},
+	Title   string
+	Year    int  `json:"released"`
+	Color   bool `json:"color,omitempty"`
+	Authors []string
 }
 
 func main() {
-	fmt.Println(movies)
+	movies := []Movie{
+		{
+			Title: "Casablanca", Year: 1942, Color: false,
+			Authors: []string{"Humphrey Bogart", "Ingrid Bergman"},
+		},
+	}
+	data, err := json.MarshalIndent(movies, "", "  ")
+	if err != nil {
+		log.Fatal("marshal error: %s\n", err)
+	}
+	fmt.Printf("%s\n", data)
 }
