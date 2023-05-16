@@ -33,4 +33,10 @@ func main() {
 		log.Fatalf("marshal error: %s\n", err)
 	}
 	fmt.Printf("%s\n", data)
+
+	var titles []struct { Title string }
+	if err := json.Unmarshal(data, &titles); err != nil {
+		log.Fatalf("unmarshal error: %s\n", err)
+	}
+	fmt.Printf("%s\n", titles)
 }
