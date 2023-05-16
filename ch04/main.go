@@ -22,8 +22,8 @@ func main() {
 			Authors: []string{"Humphrey Bogart", "Ingrid Bergman"},
 		},
 		{
-			Title: "Cool Hand Luke",
-			Year: 1967,
+			Title:   "Cool Hand Luke",
+			Year:    1967,
 			Authors: []string{"Paul Newman"},
 			comment: "something internal",
 		},
