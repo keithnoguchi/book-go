@@ -30,7 +30,7 @@ func main() {
 	}
 	data, err := json.MarshalIndent(movies, "", "  ")
 	if err != nil {
-		log.Fatal("marshal error: %s\n", err)
+		log.Fatalf("marshal error: %s\n", err)
 	}
 	fmt.Printf("%s\n", data)
 }
