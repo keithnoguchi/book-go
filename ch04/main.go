@@ -1,42 +1,23 @@
-// encoding/json.MarshalIndent()
+// Grab a github issues
+// https://developer.github.com/v3/search/#search-issues
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"log"
+	"time"
 )
 
-type Movie struct {
-	Title   string   `json:"title"`
-	Year    int      `json:"released"`
-	Color   bool     `json:"color,omitempty"`
-	Authors []string `json:"authors"`
-	comment string   // a private comment
+type IssuesSearchResult struct {
+	TotalCount int `json:"total_count"`
+	Items      []*Issue
+}
+
+type Issue struct {
+	Number    int
+	CreatedAt time.Time `json:"created_at"`
 }
 
 func main() {
-	movies := []Movie{
-		{
-			Title: "Casablanca", Year: 1942, Color: false,
-			Authors: []string{"Humphrey Bogart", "Ingrid Bergman"},
-		},
-		{
-			Title:   "Cool Hand Luke",
-			Year:    1967,
-			Authors: []string{"Paul Newman"},
-			comment: "something internal",
-		},
-	}
-	data, err := json.MarshalIndent(movies, "", "  ")
-	if err != nil {
-		log.Fatalf("marshal error: %s\n", err)
-	}
-	fmt.Printf("%s\n", data)
-
-	var titles []struct{ Title string }
-	if err := json.Unmarshal(data, &titles); err != nil {
-		log.Fatalf("unmarshal error: %s\n", err)
-	}
-	fmt.Printf("%s\n", titles)
+	var res IssuesSearchResult
+	fmt.Println(res)
 }
