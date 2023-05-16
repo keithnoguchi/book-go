@@ -8,10 +8,11 @@ import (
 )
 
 type Movie struct {
-	Title   string
-	Year    int  `json:"released"`
-	Color   bool `json:"color,omitempty"`
-	Authors []string
+	Title   string   `json:"title"`
+	Year    int      `json:"released"`
+	Color   bool     `json:"color,omitempty"`
+	Authors []string `json:"authors"`
+	comment string   // a private comment
 }
 
 func main() {
@@ -19,6 +20,12 @@ func main() {
 		{
 			Title: "Casablanca", Year: 1942, Color: false,
 			Authors: []string{"Humphrey Bogart", "Ingrid Bergman"},
+		},
+		{
+			Title: "Cool Hand Luke",
+			Year: 1967,
+			Authors: []string{"Paul Newman"},
+			comment: "something internal",
 		},
 	}
 	data, err := json.MarshalIndent(movies, "", "  ")
