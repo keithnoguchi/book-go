@@ -1,23 +1,22 @@
-// Grab a github issues
-// https://developer.github.com/v3/search/#search-issues
+// A template system exercise
 package main
 
 import (
-	"fmt"
-	"time"
+	"html/template"
+	"log"
+	"os"
 )
 
-type IssuesSearchResult struct {
-	TotalCount int `json:"total_count"`
-	Items      []*Issue
-}
-
-type Issue struct {
-	Number    int
-	CreatedAt time.Time `json:"created_at"`
-}
-
 func main() {
-	var res IssuesSearchResult
-	fmt.Println(res)
+	const templ = `<p>A : {{.A}}</p><p>B: {{.B}}</p>`
+	t := template.Must(template.New("escape").Parse(templ))
+	var data struct {
+		A string
+		B template.HTML
+	}
+	data.A = "<b>Hello!</b>"
+	data.B = "<b>Hello!</b>"
+	if e := t.Execute(os.Stdout, data); e != nil {
+		log.Fatal(e)
+	}
 }
