@@ -1,22 +1,28 @@
-// A template system exercise
+// ch04: A github issue viewer
 package main
 
 import (
-	"html/template"
+	"fmt"
 	"log"
+	"net/url"
 	"os"
+	"strings"
 )
 
 func main() {
-	const templ = `<p>A : {{.A}}</p><p>B: {{.B}}</p>`
-	t := template.Must(template.New("escape").Parse(templ))
-	var data struct {
-		A string
-		B template.HTML
+	result, err := searchIssues(os.Args[1:])
+	if err != nil {
+		log.Fatal(err)
 	}
-	data.A = "<b>Hello!</b>"
-	data.B = "<b>Hello!</b>"
-	if e := t.Execute(os.Stdout, data); e != nil {
-		log.Fatal(e)
-	}
+	fmt.Printf("%d issues\n", result.TotalCount)
+}
+
+type IssuesResult struct {
+	TotalCount int `json:"total_count"`
+}
+
+func searchIssues(terms []string) (*IssuesResult, error) {
+	q := url.QueryEscape(strings.Join(terms, " "))
+	fmt.Println(q)
+	return &IssuesResult{}, nil
 }
