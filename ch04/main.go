@@ -19,6 +19,16 @@ func main() {
 
 type IssuesResult struct {
 	TotalCount int `json:"total_count"`
+	User       *User
+}
+
+type Issue struct {
+	User *User
+}
+
+type User struct {
+	Login   string
+	HTMLURL string `json:"html_url"`
 }
 
 func searchIssues(terms []string) (*IssuesResult, error) {
