@@ -9,18 +9,22 @@ import (
 )
 
 func main() {
-	ch := make(chan io.Reader)
+	ch := make(chan io.ReadCloser)
 	for _, url := range os.Args[1:] {
 		go reader(url, ch)
 	}
 	for range os.Args[1:] {
-		fmt.Println(<-ch)
+		resp := <- ch
+		fmt.Println(resp)
+		resp.Close()
 	}
 }
 
 // reader retrieves the url website and returns the io.Reader
 // over the channel.
-func reader(url string, ch chan<- io.Reader) {
+//
+// A receiver needs to close the io.Reader
+func reader(url string, ch chan<- io.ReadCloser) {
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "http.Get(%s) error: %s\n", url, err)
