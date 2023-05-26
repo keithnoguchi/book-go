@@ -3,6 +3,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 )
 
@@ -17,5 +18,9 @@ func main() {
 }
 
 func fetch(url string, ch chan string) {
+	_, err := http.Get(url)
+	if err != nil {
+		ch <- fmt.Sprintln(err)
+	}
 	ch <- url
 }
