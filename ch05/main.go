@@ -23,15 +23,17 @@ func main() {
 //
 // Please note that it returns the error over the channel as a string,
 // which will be addressed in the future iteration.
-func fetch(url string, ch chan string) {
+func fetch(url string, ch chan<- string) {
 	resp, err := http.Get(url)
 	if err != nil {
 		ch <- fmt.Sprint(err)
+		return
 	}
 	defer resp.Body.Close()
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		ch <- fmt.Sprint(err)
+		return
 	}
 	ch <- string(b)
 }
