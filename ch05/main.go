@@ -1,4 +1,4 @@
-// A web page fetcher
+// A web page fetcher.
 package main
 
 import (
@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+
+	"golang.org/x/net/html"
 )
 
 func main() {
