@@ -1,4 +1,4 @@
-// fetch fetches the web contents
+// A web page fetcher
 package main
 
 import (
