@@ -8,6 +8,10 @@ import (
 
 func main() {
 	for _, url := range os.Args[1:] {
-		fmt.Println(url)
+		fmt.Println(fetch(url))
 	}
+}
+
+func fetch(url string) string {
+	return url
 }
