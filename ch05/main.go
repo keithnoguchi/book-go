@@ -26,12 +26,14 @@ func main() {
 func fetch(url string, ch chan string) {
 	resp, err := http.Get(url)
 	if err != nil {
-		ch <- fmt.Sprintln(err)
+		fmt.Fprintf(os.Stderr, "http.Get() error: %s", err)
+		os.Exit(1)
 	}
 	defer resp.Body.Close()
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		ch <- fmt.Sprintln(err)
+		fmt.Fprintf(os.Stderr, "ioutil.ReadAll() error: %s", err)
+		os.Exit(1)
 	}
 	ch <- string(b)
 }
