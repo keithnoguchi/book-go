@@ -7,5 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println(os.Args[1:])
+	for _, url := range os.Args[1:] {
+		fmt.Println(url)
+	}
 }
