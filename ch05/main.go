@@ -7,11 +7,15 @@ import (
 )
 
 func main() {
+	ch := make(chan string)
 	for _, url := range os.Args[1:] {
-		fmt.Println(fetch(url))
+		go fetch(url, ch)
+	}
+	for range os.Args[1:] {
+		fmt.Println(<-ch)
 	}
 }
 
-func fetch(url string) string {
-	return url
+func fetch(url string, ch chan string) {
+	ch <- url
 }
