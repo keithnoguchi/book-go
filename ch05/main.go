@@ -11,20 +11,20 @@ import (
 func main() {
 	ch := make(chan io.ReadCloser)
 	for _, url := range os.Args[1:] {
-		go reader(url, ch)
+		go getter(url, ch)
 	}
 	for range os.Args[1:] {
-		resp := <- ch
+		resp := <-ch
 		fmt.Println(resp)
 		resp.Close()
 	}
 }
 
-// reader retrieves the url website and returns the io.Reader
+// getter gets the url website and returns the io.ReadCloser
 // over the channel.
 //
-// A receiver needs to close the io.Reader
-func reader(url string, ch chan<- io.ReadCloser) {
+// The io.ReadCloser needs to be closed by the consumer.
+func getter(url string, ch chan<- io.ReadCloser) {
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "http.Get(%s) error: %s\n", url, err)
