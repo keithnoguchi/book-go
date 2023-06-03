@@ -7,7 +7,7 @@ func main() {
 	f := square
 	f = negative
 	fmt.Printf("%d\n", f(-9))
-} 
+}
 
 func square(n int) int {
 	return n * n
