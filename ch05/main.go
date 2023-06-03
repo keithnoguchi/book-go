@@ -1,22 +1,50 @@
-// A web crawler
+// A html outliner
+//
+// # Examples
+//
+// ```
+// go run . https://golang.org
+//```
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+	"os"
+
+	"golang.org/x/net/html"
+)
 
 func main() {
-	f := square
-	f = negative
-	fmt.Printf("%d\n", f(-9))
+	resp, _ := http.Get(os.Args[1])
+	doc, _ := html.Parse(resp.Body)
+	forEachNode(doc, startElement, endElement)
 }
 
-func square(n int) int {
-	return n * n
+var depth int
+
+func startElement(n *html.Node) {
+	if n.Type == html.ElementNode {
+		fmt.Printf("%*s<%s>\n", depth*2, "", n.Data)
+		depth++
+	}
 }
 
-func negative(n int) int {
-	return -n
+func endElement(n *html.Node) {
+	if n.Type == html.ElementNode {
+		fmt.Printf("%*s</%s>\n", depth*2, "", n.Data)
+		depth--
+	}
 }
 
-func product(m, n int) int {
-	return m * n
+func forEachNode(n *html.Node, pre, post func(n *html.Node)) {
+	if pre != nil {
+		pre(n)
+	}
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		forEachNode(c, pre, post)
+	}
+	if post != nil {
+		post(n)
+	}
 }
