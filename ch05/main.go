@@ -4,7 +4,7 @@
 //
 // ```
 // go run .
-//```
+// ```
 package main
 
 import (
@@ -14,18 +14,18 @@ import (
 
 var prereqs = map[string][]string{
 	"algorithms": {"data structures"},
-	"calculus": {"linear algebra"},
+	"calculus":   {"linear algebra"},
 	"compilers": {
 		"data structures",
 		"formal languages",
 		"computer organizations",
 	},
-	"data structures": {"discrete math"},
-	"databases": {"data structures"},
-	"discrete math": {"intro to programming"},
-	"formal languages": {"discrete math"},
-	"networks": {"operating systems"},
-	"operating systems": {"data structures", "computer organizations"},
+	"data structures":       {"discrete math"},
+	"databases":             {"data structures"},
+	"discrete math":         {"intro to programming"},
+	"formal languages":      {"discrete math"},
+	"networks":              {"operating systems"},
+	"operating systems":     {"data structures", "computer organizations"},
 	"programming languages": {"data structures", "computer organizations"},
 }
 
