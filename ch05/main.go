@@ -2,9 +2,9 @@
 //
 // # Example
 //
-// 111
+// ```
 // go run . https://golang.org
-//```
+// ```
 package main
 
 import (
