@@ -25,14 +25,14 @@ func fetch(url string, ch chan<- string) {
 	start := time.Now()
 	resp, err := http.Get(url)
 	if err != nil {
-		ch <-fmt.Sprint(err)
+		ch <- fmt.Sprint(err)
 		return
 	}
 	nbytes, err := io.Copy(io.Discard, resp.Body)
 	if err != nil {
-		ch <-fmt.Sprint(err)
+		ch <- fmt.Sprint(err)
 		return
 	}
 	sec := time.Since(start).Seconds()
-	ch <-fmt.Sprintf("%.2fs %7d %s", sec, nbytes, url)
+	ch <- fmt.Sprintf("%.2fs %7d %s", sec, nbytes, url)
 }
