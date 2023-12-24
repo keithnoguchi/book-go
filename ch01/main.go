@@ -6,10 +6,10 @@ import (
 	"image"
 	"image/color"
 	"image/gif"
+	"log"
 	"math"
 	"math/rand"
 	"net/http"
-	"log"
 )
 
 func main() {
@@ -31,11 +31,11 @@ var palette = []color.Color{color.White, color.Black}
 
 func lissajous(w http.ResponseWriter, r *http.Request) {
 	const (
-		cycles = 10
-		res = 0.001
-		size = 200
+		cycles  = 10
+		res     = 0.001
+		size    = 200
 		nframes = 64
-		delay = 8
+		delay   = 8
 	)
 	freq := rand.Float64() * 3.0
 	anim := gif.GIF{LoopCount: nframes}
