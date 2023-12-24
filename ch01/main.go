@@ -31,9 +31,9 @@ var palette = []color.Color{color.White, color.Black}
 
 func lissajous(w http.ResponseWriter, r *http.Request) {
 	const (
-		cycles  = 10
+		cycles  = 5
 		res     = 0.001
-		size    = 200
+		size    = 400
 		nframes = 64
 		delay   = 8
 	)
