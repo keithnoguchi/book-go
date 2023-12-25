@@ -1,14 +1,8 @@
-// A lissajous web server
-//
-// # Examples
-//
-// ```
-// $ go run main.go
-// ```
+// A Lissajous web server
 package main
 
 import (
-	"context"
+	"fmt"
 	"image"
 	"image/color"
 	"image/gif"
@@ -16,44 +10,30 @@ import (
 	"math"
 	"math/rand"
 	"net/http"
-	"sync"
-	"time"
 )
 
-var palette = []color.Color{color.White, color.Black}
+func main() {
+	http.HandleFunc("/", lissajous)
+	http.HandleFunc("/hello", hello)
+	log.Fatal(http.ListenAndServe("localhost:8080", nil))
+}
+
+func hello(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello world!\n")
+}
 
 const (
 	whiteIndex = 0
 	blackIndex = 1
 )
 
-func main() {
-	http.HandleFunc("/", handler)
-	s := &http.Server{Addr: "localhost:8000"}
+var palette = []color.Color{color.White, color.Black}
 
-	// Fires up the server goroutine.
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		if err := s.ListenAndServe(); err != http.ErrServerClosed {
-			log.Fatal(err)
-		}
-	}()
-
-	// Shutdowns the server after five seconds
-	time.Sleep(5 * time.Second)
-	if err := s.Shutdown(context.Background()); err != nil {
-		log.Fatal(err)
-	}
-	wg.Wait()
-}
-
-func handler(w http.ResponseWriter, r *http.Request) {
+func lissajous(w http.ResponseWriter, r *http.Request) {
 	const (
 		cycles  = 5
 		res     = 0.001
-		size    = 100
+		size    = 400
 		nframes = 64
 		delay   = 8
 	)
