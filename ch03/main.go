@@ -1,48 +1,19 @@
-// A Mandelbrot set web server
+// A Mandelbrot set plotter
 package main
 
 import (
-	"context"
 	"image"
 	"image/color"
 	"image/png"
-	"log"
 	"math/cmplx"
-	"net/http"
-	"sync"
-	"time"
+	"os"
 )
 
-type Mandelbrot struct{}
-
 func main() {
-	var s = http.Server{
-		Addr:    "localhost:8080",
-		Handler: Mandelbrot{},
-	}
-
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		if err := s.ListenAndServe(); err != http.ErrServerClosed {
-			log.Fatal(err)
-		}
-	}()
-
-	time.Sleep(5 * time.Second)
-	if err := s.Shutdown(context.Background()); err != nil {
-		log.Fatal(err)
-	}
-	wg.Wait()
-}
-
-func (h Mandelbrot) ServeHTTP(w http.ResponseWriter, _r *http.Request) {
 	const (
 		xmin, ymin, xmax, ymax = -2, -2, +2, +2
 		width, height          = 1024, 1024
 	)
-
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
 	for py := 0; py < height; py++ {
 		y := float64(py)/height*(ymax-ymin) + ymin
@@ -52,7 +23,7 @@ func (h Mandelbrot) ServeHTTP(w http.ResponseWriter, _r *http.Request) {
 			img.Set(px, py, mandelbrot(z))
 		}
 	}
-	png.Encode(w, img)
+	png.Encode(os.Stdout, img)
 }
 
 func mandelbrot(z complex128) color.Color {
