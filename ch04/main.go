@@ -11,12 +11,11 @@ func main() {
 }
 
 func nonempty(data []string) []string {
-	i := 0
+	out := data[:0]
 	for _, s := range data {
 		if s != "" {
-			data[i] = s
-			i++
+			out = append(out, s)
 		}
 	}
-	return data[:i]
+	return out
 }
