@@ -1,28 +1,22 @@
-// 4.2.2. In-Place Slice Techniques
+// 4.3. Maps
 package main
 
 import "fmt"
 
 func main() {
-	stack := []int{}
-	stack = push(stack, 1)
-	stack = push(stack, 99, 2020)
-	fmt.Printf("%v\n", stack)
-	for range stack {
-		var x int
-		stack, x = pop(stack)
-		fmt.Printf("%v\n", x)
-		fmt.Printf("%v\n", stack)
+	fmt.Println(
+		equal(map[string]int{"keith": 0}, map[string]int{"mai": 0}),
+	)
+}
+
+func equal(x, y map[string]int) bool {
+	if len(x) != len(y) {
+		return false
 	}
-	//stack, x := pop(stack) panic...
-	//fmt.Printf("%v\n", x)
-}
-
-func push(stack []int, data ...int) []int {
-	return append(stack, data...)
-}
-
-func pop(stack []int) ([]int, int) {
-	x := stack[len(stack)-1]
-	return stack[:len(stack)-1], x
+	for k, xv := range x {
+		if yv, ok := y[k]; !ok || yv != xv {
+			return false
+		}
+	}
+	return true
 }
