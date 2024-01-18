@@ -10,11 +10,17 @@ func main() {
 		fmt.Printf("%d  cap=%d\t%v\n", i, cap(y), y)
 		x = y
 	}
+	var z []int
+	z = appendInt(z, 1)
+	z = appendInt(z, 2, 3)
+	z = appendInt(z, 4, 5, 6)
+	z = appendInt(z, z...)
+	fmt.Println(z)
 }
 
-func appendInt(x []int, y int) []int {
+func appendInt(x []int, y ...int) []int {
 	var z []int
-	zlen := len(x) + 1
+	zlen := len(x) + len(y)
 	if zlen <= cap(x) {
 		z = x[:zlen]
 	} else {
@@ -25,6 +31,6 @@ func appendInt(x []int, y int) []int {
 		z = make([]int, zlen, zcap)
 		copy(z, x)
 	}
-	z[zlen-1] = y
+	copy(z[len(x):], y)
 	return z
 }
