@@ -1,48 +1,32 @@
-// UTF8 aware charcounter
+// Graph
 package main
 
-import (
-	"bufio"
-	"fmt"
-	"io"
-	"os"
-	"unicode"
-	"unicode/utf8"
-)
+import "fmt"
+
+type graph map[string]map[string]bool
 
 func main() {
-	counts := make(map[rune]int)
-	var utflens [utf8.UTFMax + 1]int
-	invalid := 0
+	g := newGraph()
+	g.addEdge("a", "b")
+	g.addEdge("b", "a")
+	g.addEdge("a", "c")
+	fmt.Println(g)
+	fmt.Println(g.hasEdge("a", "b"))
+	fmt.Println(g.hasEdge("a", "c"))
+	fmt.Println(g.hasEdge("c", "a"))
+}
 
-	in := bufio.NewReader(os.Stdin)
-	for {
-		r, n, err := in.ReadRune()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "charcount: %v\n", err)
-			os.Exit(1)
-		}
-		if r == unicode.ReplacementChar {
-			invalid++
-			continue
-		}
-		counts[r]++
-		utflens[n]++
+func newGraph() graph {
+	return make(map[string]map[string]bool)
+}
+
+func (g graph) addEdge(from, to string) {
+	if g[from] == nil {
+		g[from] = make(map[string]bool)
 	}
-	fmt.Printf("rune\tcount\n")
-	for r, n := range counts {
-		fmt.Printf("%-5q %3d\n", r, n)
-	}
-	fmt.Printf("\nlen\tcount\n")
-	for i, n := range utflens {
-		if i > 0 {
-			fmt.Printf("%d\t%d\n", i, n)
-		}
-	}
-	if invalid > 0 {
-		fmt.Printf("\n%d invalid UTF-8 characters\n", invalid)
-	}
+	g[from][to] = true
+}
+
+func (g graph) hasEdge(from, to string) bool {
+	return g[from][to]
 }
