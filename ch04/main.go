@@ -1,21 +1,28 @@
-// Github issue lister
+// A github issue searcher
 package main
 
 import (
 	//"encoding/json"
-	"fmt"
-	//"log"
-	//"net/http"
+	//"fmt"
+	"log"
+	"net/http"
 	"net/url"
 	"os"
 	"strings"
 )
 
-const githubURL = "https://api.github.com/search/issues"
+const issuesURL = "https://api.github.com/search/issues"
 
 func main() {
 	q := url.QueryEscape(strings.Join(os.Args[1:], " "))
-	fmt.Printf("%s\n", q)
+	resp, err := http.Get(issuesURL + "?q=" + q)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		log.Fatalf("HTTP status code: %d", resp.StatusCode)
+	}
 }
 
 type Issues struct {
