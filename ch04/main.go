@@ -28,6 +28,12 @@ func main() {
 		log.Fatal(err)
 	}
 	fmt.Printf("%d issues:\n", issues.TotalCount)
+	for _, item := range issues.Items {
+		fmt.Printf(
+			"#%-5d %9.9s %.55s\n",
+			item.Number, item.Title, item.Body,
+		)
+	}
 }
 
 type Issues struct {
@@ -37,4 +43,6 @@ type Issues struct {
 
 type Issue struct {
 	Number int
+	Title  string
+	Body   string
 }
