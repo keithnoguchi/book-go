@@ -1,4 +1,4 @@
-// An insertion sort
+// JSON Marshaling and Unmarshaling
 package main
 
 import (
@@ -26,4 +26,10 @@ func main() {
 		log.Fatal("json.Marshal: %v", err)
 	}
 	fmt.Printf("%s\n", data)
+
+	var titles []struct{Title string}
+	if err := json.Unmarshal(data, &titles); err != nil {
+		log.Fatal("json.Unmarshal: %v", err)
+	}
+	fmt.Printf("%#s\n", titles)
 }
