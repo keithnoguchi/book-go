@@ -2,8 +2,8 @@
 package main
 
 import (
-	//"encoding/json"
-	//"fmt"
+	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"net/url"
@@ -23,6 +23,11 @@ func main() {
 	if resp.StatusCode != http.StatusOK {
 		log.Fatalf("HTTP status code: %d", resp.StatusCode)
 	}
+	var issues Issues
+	if err := json.NewDecoder(resp.Body).Decode(&issues); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("%d issues:\n", issues.TotalCount)
 }
 
 type Issues struct {
