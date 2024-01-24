@@ -31,7 +31,7 @@ func main() {
 }
 
 type Issues struct {
-	TotalCount int      `json:"total_count"`
+	TotalCount int `json:"total_count"`
 	Items      []*Issue
 }
 
