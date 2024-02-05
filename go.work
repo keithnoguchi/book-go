@@ -2,8 +2,8 @@ go 1.21.5
 
 use (
 	ch01
-	./ch02
-	./ch03
+	ch02
+	ch03
 	ch04
 	ch05
 )
