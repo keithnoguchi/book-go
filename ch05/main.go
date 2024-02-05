@@ -1,34 +1,22 @@
-// A web link lister.
+// A web link finder
 package main
 
 import (
 	"fmt"
-	"io"
-	"net/http"
 	"os"
+	"sync"
 )
 
 func main() {
-	ch := make(chan io.ReadCloser)
+	var wg sync.WaitGroup
+	wg.Add(len(os.Args[1:]))
 	for _, url := range os.Args[1:] {
-		go getter(url, ch)
+		go visitor(&wg, url)
 	}
-	for range os.Args[1:] {
-		resp := <-ch
-		fmt.Println(resp)
-		resp.Close()
-	}
+	wg.Wait()
 }
 
-// getter gets the url website and returns the io.ReadCloser
-// over the channel.
-//
-// The io.ReadCloser needs to be closed by the consumer.
-func getter(url string, ch chan<- io.ReadCloser) {
-	resp, err := http.Get(url)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "http.Get(%s) error: %s\n", url, err)
-		return
-	}
-	ch <- resp.Body
+func visitor(wg *sync.WaitGroup, url string) {
+	defer wg.Done()
+	fmt.Println(url)
 }
