@@ -3,32 +3,51 @@ package main
 
 import (
 	"fmt"
-	"io"
+	"log"
 	"net/http"
 	"os"
-	"sync"
+
+	"golang.org/x/net/html"
 )
 
 func main() {
-	var wg sync.WaitGroup
-	wg.Add(len(os.Args[1:]))
+	result := make(chan []string)
 	for _, url := range os.Args[1:] {
-		go visitor(&wg, url)
+		go visiter(result, url)
 	}
-	wg.Wait()
+	for range os.Args[1:] {
+		links := <- result
+		for i, link := range links {
+			fmt.Println(i, link)
+		}
+	}
 }
 
-func visitor(wg *sync.WaitGroup, url string) {
-	defer wg.Done()
+func visiter(out chan<- []string, url string) {
 	resp, err := http.Get(url)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "visitor: %v\n", err)
-		return
+		log.Printf("get(%q): %v", url, err)
+		out <- nil
 	}
 	defer resp.Body.Close()
-	n, err := io.Copy(io.Discard, resp.Body)
+	doc, err := html.Parse(resp.Body)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "visitor: %v\n", err)
+		log.Printf("parse(%q): %v", url, err)
+		out <- nil
 	}
-	fmt.Println(url, n)
+	out <- visit(nil, doc)
+}
+
+func visit(link []string, n *html.Node) []string {
+	if n.Type == html.ElementNode && n.Data == "a" {
+		for _, a := range n.Attr {
+			if a.Key == "href" {
+				link = append(link, a.Val)
+			}
+		}
+	}
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		link = visit(link, c)
+	}
+	return link
 }
