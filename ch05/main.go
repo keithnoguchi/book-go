@@ -1,21 +1,31 @@
-// 5.6 Anonymous Functions
+// 5.6 Topological Sorting
 package main
 
 import "fmt"
 
-func main() {
-	fmt.Println("5.6 Anonymous Functions")
-	f := squares()
-	fmt.Println(f())
-	fmt.Println(f())
-	fmt.Println(f())
-	fmt.Println(f())
+var prereqs = map[string][]string{
+	"algorithms": {"data structures"},
+	"calculus": {"linear algebra"},
+	"compilers": {
+		"data structures",
+		"formal laguages",
+		"computer organization",
+	},
+	"data structures": {"discrete math"},
+	"data bases": {"data structures"},
+	"discrete math": {"intro to programming"},
+	"formal language": {"discrete math"},
+	"networks": {"operating systems"},
+	"operating systems": {
+		"data structures",
+		"algorithms",
+	},
+	"programming languages": {
+		"data structures",
+		"computer organization",
+	},
 }
 
-func squares() func() int {
-	var x int
-	return func() int {
-		x++
-		return x * x
-	}
+func main() {
+	fmt.Printf("%#v\n", prereqs)
 }
