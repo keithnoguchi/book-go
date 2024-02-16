@@ -1,7 +1,10 @@
 // 5.6 Topological Sorting
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
 
 var prereqs = map[string][]string{
 	"algorithms": {"data structures"},
@@ -27,5 +30,16 @@ var prereqs = map[string][]string{
 }
 
 func main() {
-	fmt.Printf("%#v\n", prereqs)
+	for i, course := range topoSort(prereqs) {
+		fmt.Printf("%d\t%s\n", i, course)
+	}
+}
+
+func topoSort(m map[string][]string) []string {
+	var keys []string
+	for key := range m {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+	return keys
 }
