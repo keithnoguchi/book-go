@@ -11,13 +11,13 @@ var prereqs = map[string][]string{
 	"calculus": {"linear algebra"},
 	"compilers": {
 		"data structures",
-		"formal laguages",
+		"formal languages",
 		"computer organization",
 	},
 	"data structures": {"discrete math"},
 	"data bases": {"data structures"},
 	"discrete math": {"intro to programming"},
-	"formal language": {"discrete math"},
+	"formal languages": {"discrete math"},
 	"networks": {"operating systems"},
 	"operating systems": {
 		"data structures",
@@ -36,10 +36,23 @@ func main() {
 }
 
 func topoSort(m map[string][]string) []string {
+	var order []string
+	seen := make(map[string]bool)
+	var visit func([]string)
+	visit = func(items []string) {
+		for _, item := range items {
+			if !seen[item] {
+				seen[item] = true
+				visit(m[item])
+				order = append(order, item)
+			}
+		}
+	}
 	var keys []string
 	for key := range m {
 		keys = append(keys, key)
 	}
 	sort.Strings(keys)
-	return keys
+	visit(keys)
+	return order
 }
