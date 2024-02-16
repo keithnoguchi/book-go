@@ -8,17 +8,17 @@ import (
 
 var prereqs = map[string][]string{
 	"algorithms": {"data structures"},
-	"calculus": {"linear algebra"},
+	"calculus":   {"linear algebra"},
 	"compilers": {
 		"data structures",
 		"formal languages",
 		"computer organization",
 	},
-	"data structures": {"discrete math"},
-	"data bases": {"data structures"},
-	"discrete math": {"intro to programming"},
+	"data structures":  {"discrete math"},
+	"data bases":       {"data structures"},
+	"discrete math":    {"intro to programming"},
 	"formal languages": {"discrete math"},
-	"networks": {"operating systems"},
+	"networks":         {"operating systems"},
 	"operating systems": {
 		"data structures",
 		"algorithms",
