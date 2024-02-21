@@ -7,37 +7,38 @@ import (
 )
 
 var prereqs = map[string][]string{
-	"algorithms": {"data structures"},
-	"calculus":   {"linear algebra"},
+	"programming languages": {
+		"data structures",
+		"computer organization",
+	},
+	"operating systems": {
+		"data structures",
+		"algorithms",
+	},
+	"networks":         {"operating systems"},
+	"formal languages": {"discrete math"},
+	"discrete math":    {"intro to programming"},
+	"data bases":       {"data structures"},
+	"data structures":  {"discrete math"},
 	"compilers": {
 		"data structures",
 		"formal languages",
 		"computer organization",
 	},
-	"data structures":  {"discrete math"},
-	"data bases":       {"data structures"},
-	"discrete math":    {"intro to programming"},
-	"formal languages": {"discrete math"},
-	"networks":         {"operating systems"},
-	"operating systems": {
-		"data structures",
-		"algorithms",
-	},
-	"programming languages": {
-		"data structures",
-		"computer organization",
-	},
+	"calculus": {"linear algebra"},
+	"algorithms": {"data structures"},
 }
 
 func main() {
 	for i, course := range topoSort(prereqs) {
-		fmt.Printf("%d\t%s\n", i, course)
+		fmt.Printf("%d\t%s\n", i+1, course)
 	}
 }
 
+// Topological sorting, depth first example.
 func topoSort(m map[string][]string) []string {
-	var order []string
 	seen := make(map[string]bool)
+	var order []string
 	var visit func([]string)
 	visit = func(items []string) {
 		for _, item := range items {
@@ -48,6 +49,8 @@ func topoSort(m map[string][]string) []string {
 			}
 		}
 	}
+	// sort the keys of the prerequisite map to make the
+	// result deterministic.
 	var keys []string
 	for key := range m {
 		keys = append(keys, key)
