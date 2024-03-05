@@ -13,6 +13,6 @@ Examples from [the Go Programming Language], aka, the book.
 - [Chapter 2: A pop counter](ch02/main.go)
 - [Chapter 3: A Mandelbrot set plotter](ch03/main.go)
 - [Chapter 4: A github issue search](ch04/main.go)
-- [Chapter 5: 5.6 Topological Sorting](ch05/main.go)
+- [Chapter 5: 5.10 Return without return statement](ch05/main.go)
 
 Happy Hacking!
