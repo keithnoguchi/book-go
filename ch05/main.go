@@ -4,8 +4,8 @@ package main
 import (
 	"fmt"
 	"log"
-	"os"
 	"net/http"
+	"os"
 
 	"golang.org/x/net/html"
 )
@@ -16,7 +16,7 @@ func main() {
 
 func bfs(f func(string) []string, worklist []string) {
 	seen := make(map[string]bool)
-	for len(worklist) > 0  {
+	for len(worklist) > 0 {
 		items := worklist
 		worklist = nil
 		for _, item := range items {
