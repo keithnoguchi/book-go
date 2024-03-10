@@ -1,34 +1,84 @@
-// A web link lister.
+// A web crawler
 package main
 
 import (
 	"fmt"
-	"io"
+	"log"
 	"net/http"
 	"os"
+
+	"golang.org/x/net/html"
 )
 
 func main() {
-	ch := make(chan io.ReadCloser)
-	for _, url := range os.Args[1:] {
-		go getter(url, ch)
-	}
-	for range os.Args[1:] {
-		resp := <-ch
-		fmt.Println(resp)
-		resp.Close()
+	bfs(crawl, os.Args[1:])
+}
+
+func bfs(f func(string) []string, worklist []string) {
+	seen := make(map[string]bool)
+	for len(worklist) > 0 {
+		items := worklist
+		worklist = nil
+		for _, item := range items {
+			if seen[item] {
+				continue
+			}
+			seen[item] = true
+			worklist = append(worklist, f(item)...)
+		}
 	}
 }
 
-// getter gets the url website and returns the io.ReadCloser
-// over the channel.
-//
-// The io.ReadCloser needs to be closed by the consumer.
-func getter(url string, ch chan<- io.ReadCloser) {
+func crawl(url string) []string {
+	fmt.Println(url)
+	list, err := extract(url)
+	if err != nil {
+		log.Print(err)
+	}
+	return list
+}
+
+func extract(url string) ([]string, error) {
 	resp, err := http.Get(url)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "http.Get(%s) error: %s\n", url, err)
-		return
+		return nil, err
 	}
-	ch <- resp.Body
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("%s: %s", url, resp.Status)
+	}
+	doc, err := html.Parse(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("%s: %v", url, err)
+	}
+	var links []string
+	visit := func(n *html.Node) {
+		if n.Type != html.ElementNode || n.Data != "a" {
+			return
+		}
+		for _, a := range n.Attr {
+			if a.Key == "href" {
+				link, err := resp.Request.URL.Parse(a.Val)
+				if err != nil {
+					log.Printf("%s/%s: %v", url, a.Val, err)
+					continue
+				}
+				links = append(links, link.String())
+			}
+		}
+	}
+	forEachNode(doc, visit, nil)
+	return links, nil
+}
+
+func forEachNode(n *html.Node, pre, post func(*html.Node)) {
+	if pre != nil {
+		pre(n)
+	}
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		forEachNode(c, pre, post)
+	}
+	if post != nil {
+		post(n)
+	}
 }
